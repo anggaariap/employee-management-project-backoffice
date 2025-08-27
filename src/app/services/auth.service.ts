@@ -5,7 +5,6 @@ export class AuthService {
   private _user = signal<string | null>(localStorage.getItem('user'));
 
   login(username: string, password: string): boolean {
-    // hard-coded demo creds
     const ok = (username === 'admin' && password === 'admin123');
     if (ok) {
       this._user.set(username);

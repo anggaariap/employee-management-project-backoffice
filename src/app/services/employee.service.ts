@@ -11,7 +11,6 @@ export class EmployeeService {
   private statuses = ['Active','Inactive','Probation','Leave'];
 
   private _employees = signal<Employee[]>(this.seedEmployees());
-  // persist list state across navigations
   private _state = signal<ListState>({
     pageIndex: 0,
     pageSize: 10,

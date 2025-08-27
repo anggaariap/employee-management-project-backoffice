@@ -22,44 +22,61 @@
   </div>
 
   <div class="flex items-center justify-center p-6">
-    <div class="w-full max-w-md rounded-2xl border border-white/60 bg-white/80 backdrop-blur shadow-xl p-6">
-      <h1 class="text-xl font-semibold mb-4">Login</h1>
-
-      <form [formGroup]="form" (ngSubmit)="submit()" class="space-y-4">
-        <div>
-          <label class="block text-sm mb-1">Username</label>
-          <input
-            class="w-full rounded-lg border border-gray-300 px-3 py-2 shadow-sm transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30"
-            formControlName="username"
-            placeholder="Username"
-          />
-          <div class="mt-1 text-xs text-red-600"
-               *ngIf="form.get('username')?.touched && form.get('username')?.hasError('required')">
-            Username wajib diisi
-          </div>
+    <div class="w-full max-w-md flex flex-col items-center gap-4">
+      <div class="text-center">
+        <div
+          class="mx-auto h-12 w-12 rounded-xl bg-gradient-to-br from-emerald-600 to-green-500
+                 flex items-center justify-center shadow-lg ring-1 ring-black/10">
+          <svg viewBox="0 0 24 24" class="h-6 w-6 text-white" fill="currentColor" aria-hidden="true">
+            <path d="M9 6V5a3 3 0 013-3 3 3 0 013 3v1h3a2 2 0 012 2v4h-5.5a1.5 1.5 0 01-3 0H4V8a2 2 0 012-2h3zm2-1a1 1 0 011-1 1 1 0 011 1v1h-2V5z"></path>
+            <path d="M4 12h6.5a1.5 1.5 0 003 0H20v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5z"></path>
+          </svg>
         </div>
+        <div class="mt-2 text-base font-semibold text-gray-900">Employee Management</div>
+      </div>
 
-        <div>
-          <label class="block text-sm mb-1">Password</label>
-          <input
-            type="password"
-            class="w-full rounded-lg border border-gray-300 px-3 py-2 shadow-sm transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30"
-            formControlName="password"
-            placeholder="Password"
-          />
-          <div class="mt-1 text-xs text-red-600"
-               *ngIf="form.get('password')?.touched && form.get('password')?.hasError('required')">
-            Password wajib diisi
+      <div class="w-full rounded-2xl border border-white/60 bg-white/80 backdrop-blur shadow-xl p-6">
+        <h1 class="text-xl font-semibold mb-4">Login</h1>
+
+        <form [formGroup]="form" (ngSubmit)="submit()" class="space-y-4">
+          <div>
+            <label class="block text-sm mb-1">Username</label>
+            <input
+              class="w-full rounded-lg border border-gray-300 px-3 py-2 shadow-sm transition
+                     focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30"
+              formControlName="username"
+              placeholder="Username"
+            />
+            <div class="mt-1 text-xs text-red-600"
+                 *ngIf="form.get('username')?.touched && form.get('username')?.hasError('required')">
+              Username wajib diisi
+            </div>
           </div>
-        </div>
 
-        <button
-          class="w-full rounded-lg bg-gradient-to-r from-emerald-600 to-green-600 py-2 font-medium text-white shadow-sm ring-1 ring-black/10 transition hover:from-emerald-500 hover:to-green-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
-          type="submit">
-          Login
-        </button>
-      </form>
+          <div>
+            <label class="block text-sm mb-1">Password</label>
+            <input
+              type="password"
+              class="w-full rounded-lg border border-gray-300 px-3 py-2 shadow-sm transition
+                     focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30"
+              formControlName="password"
+              placeholder="Password"
+            />
+            <div class="mt-1 text-xs text-red-600"
+                 *ngIf="form.get('password')?.touched && form.get('password')?.hasError('required')">
+              Password wajib diisi
+            </div>
+          </div>
 
+          <button
+            class="w-full rounded-lg bg-gradient-to-r from-emerald-600 to-green-600 py-2 font-medium text-white shadow-sm
+                   ring-1 ring-black/10 transition hover:from-emerald-500 hover:to-green-500
+                   focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+            type="submit">
+            Login
+          </button>
+        </form>
+      </div>
     </div>
   </div>
 </div>

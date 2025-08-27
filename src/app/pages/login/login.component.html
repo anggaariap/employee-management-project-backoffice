@@ -1,0 +1,65 @@
+<app-toast></app-toast>
+
+<div class="min-h-screen overflow-hidden grid md:grid-cols-2">
+  <div class="relative hidden md:block">
+    <img
+      src="/assets/images/login-bg.jpg"
+      alt="Team working"
+      class="absolute inset-0 h-full w-full object-cover"
+      loading="eager"
+      fetchpriority="high"
+    />
+    <div class="absolute inset-0 bg-gradient-to-r from-black/40 to-black/10"></div>
+
+    <div class="relative z-10 h-full flex items-end p-8 text-white">
+      <div class="max-w-md">
+        <h2 class="text-2xl font-semibold drop-shadow">Employee Management</h2>
+        <p class="mt-1 text-sm text-white/80 drop-shadow">
+          Kelola karyawan dengan cepat, aman, dan modern.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex items-center justify-center p-6">
+    <div class="w-full max-w-md rounded-2xl border border-white/60 bg-white/80 backdrop-blur shadow-xl p-6">
+      <h1 class="text-xl font-semibold mb-4">Login</h1>
+
+      <form [formGroup]="form" (ngSubmit)="submit()" class="space-y-4">
+        <div>
+          <label class="block text-sm mb-1">Username</label>
+          <input
+            class="w-full rounded-lg border border-gray-300 px-3 py-2 shadow-sm transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30"
+            formControlName="username"
+            placeholder="Username"
+          />
+          <div class="mt-1 text-xs text-red-600"
+               *ngIf="form.get('username')?.touched && form.get('username')?.hasError('required')">
+            Username wajib diisi
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm mb-1">Password</label>
+          <input
+            type="password"
+            class="w-full rounded-lg border border-gray-300 px-3 py-2 shadow-sm transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30"
+            formControlName="password"
+            placeholder="Password"
+          />
+          <div class="mt-1 text-xs text-red-600"
+               *ngIf="form.get('password')?.touched && form.get('password')?.hasError('required')">
+            Password wajib diisi
+          </div>
+        </div>
+
+        <button
+          class="w-full rounded-lg bg-gradient-to-r from-emerald-600 to-green-600 py-2 font-medium text-white shadow-sm ring-1 ring-black/10 transition hover:from-emerald-500 hover:to-green-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+          type="submit">
+          Login
+        </button>
+      </form>
+
+    </div>
+  </div>
+</div>

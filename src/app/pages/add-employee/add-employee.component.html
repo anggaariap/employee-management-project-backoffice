@@ -1,0 +1,68 @@
+<app-toast></app-toast>
+<div class="bg-white border rounded-xl shadow p-6">
+  <h1 class="text-xl font-semibold mb-4">Add Employee</h1>
+  <form [formGroup]="form" class="grid md:grid-cols-2 gap-4">
+    <div>
+      <label class="block text-sm">Username</label>
+      <input class="w-full border rounded px-3 py-2" formControlName="username" placeholder="unique username"/>
+      <p class="text-xs text-red-600" *ngIf="form.get('username')?.touched && form.get('username')?.invalid">Wajib diisi</p>
+    </div>
+    <div>
+      <label class="block text-sm">Email</label>
+      <input class="w-full border rounded px-3 py-2" formControlName="email" placeholder="email@domain.com"/>
+      <p class="text-xs text-red-600" *ngIf="form.get('email')?.touched && form.get('email')?.hasError('required')">Wajib diisi</p>
+      <p class="text-xs text-red-600" *ngIf="form.get('email')?.touched && form.get('email')?.hasError('email')">Format email tidak valid</p>
+    </div>
+    <div>
+      <label class="block text-sm">First Name</label>
+      <input class="w-full border rounded px-3 py-2" formControlName="firstName"/>
+      <p class="text-xs text-red-600" *ngIf="form.get('firstName')?.touched && form.get('firstName')?.invalid">Wajib diisi</p>
+    </div>
+    <div>
+      <label class="block text-sm">Last Name</label>
+      <input class="w-full border rounded px-3 py-2" formControlName="lastName"/>
+      <p class="text-xs text-red-600" *ngIf="form.get('lastName')?.touched && form.get('lastName')?.invalid">Wajib diisi</p>
+    </div>
+    <div>
+      <label class="block text-sm">Birth Date</label>
+      <input type="datetime-local" class="w-full border rounded px-3 py-2" formControlName="birthDate" [attr.max]="maxDateTimeLocal"/>
+      <p class="text-xs text-red-600" *ngIf="form.get('birthDate')?.touched && form.get('birthDate')?.hasError('required')">Wajib diisi</p>
+      <p class="text-xs text-red-600" *ngIf="form.get('birthDate')?.touched && form.get('birthDate')?.hasError('future')">Tidak boleh melebihi hari ini</p>
+    </div>
+    <div>
+      <label class="block text-sm">Basic Salary</label>
+      <input type="number" step="0.01" class="w-full border rounded px-3 py-2" formControlName="basicSalary" placeholder="contoh: 5000000"/>
+      <p class="text-xs text-red-600" *ngIf="form.get('basicSalary')?.touched && form.get('basicSalary')?.invalid">Harus angka & wajib diisi</p>
+    </div>
+    <div>
+      <label class="block text-sm">Status</label>
+      <select class="w-full border rounded px-3 py-2" formControlName="status">
+        <option value="">-- pilih status --</option>
+        <option value="Active">Active</option>
+        <option value="Inactive">Inactive</option>
+        <option value="Probation">Probation</option>
+        <option value="Leave">Leave</option>
+      </select>
+      <p class="text-xs text-red-600" *ngIf="form.get('status')?.touched && form.get('status')?.invalid">Wajib diisi</p>
+    </div>
+    <div class="md:col-span-2">
+      <label class="block text-sm">Group</label>
+      <input class="w-full border rounded px-3 py-2 mb-2" [ngModel]="groupFilter()" (ngModelChange)="groupFilter.set($event)" name="groupFilter" placeholder="Cari group..."/>
+      <select class="w-full border rounded px-3 py-2" formControlName="group">
+        <option value="">-- pilih group --</option>
+        <option *ngFor="let g of filteredGroups" [value]="g">{{g}}</option>
+      </select>
+      <p class="text-xs text-gray-500 mt-1">10 dummy group: Engineering, QA, Design, HR, Finance, Marketing, Sales, Support, Ops, IT</p>
+      <p class="text-xs text-red-600" *ngIf="form.get('group')?.touched && form.get('group')?.invalid">Wajib diisi</p>
+    </div>
+    <div class="md:col-span-2">
+      <label class="block text-sm">Description</label>
+      <textarea rows="4" class="w-full border rounded px-3 py-2" formControlName="description"></textarea>
+      <p class="text-xs text-red-600" *ngIf="form.get('description')?.touched && form.get('description')?.invalid">Wajib diisi</p>
+    </div>
+    <div class="md:col-span-2 flex gap-3 justify-end">
+      <button type="button" class="px-4 py-2 border rounded hover:bg-gray-50" (click)="cancel()">Cancel</button>
+      <button type="button" class="px-4 py-2 rounded bg-gray-900 text-white hover:bg-gray-800" (click)="save()">Save</button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,213 @@
+<app-toast></app-toast>
+
+<div class="mb-5 flex flex-col gap-3 md:flex-row md:items-center">
+  <a
+    routerLink="/employees/add"
+    class="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-600 to-green-600 px-4 py-2 text-sm font-semibold text-white shadow-sm ring-1 ring-inset ring-black/10 hover:from-emerald-500 hover:to-green-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M11 11V5a1 1 0 1 1 2 0v6h6a1 1 0 1 1 0 2h-6v6a1 1 0 1 1-2 0v-6H5a1 1 0 1 1 0-2h6z"/></svg>
+    Add Employee
+  </a>
+
+  <div class="md:ml-auto flex items-center gap-2">
+    <label class="text-sm text-gray-600">Rows per page</label>
+    <div class="relative">
+      <select
+        class="appearance-none rounded-lg border border-gray-300 bg-white px-3 py-1.5 pr-9 text-sm shadow-sm transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30"
+        [ngModel]="state().pageSize"
+        (ngModelChange)="onPageSizeChange($event)"
+      >
+        <option *ngFor="let s of pageSizes" [value]="s">{{ s }}</option>
+      </select>
+      <svg class="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
+        <path d="M5.5 7.5l4.5 4.5 4.5-4.5" />
+      </svg>
+    </div>
+  </div>
+</div>
+
+<div class="mb-4 grid gap-3 md:grid-cols-3">
+  <div class="md:col-span-2">
+    <label class="mb-1 block text-sm font-medium text-gray-700">Keyword (username/nama/email)</label>
+    <div class="relative">
+      <svg class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" viewBox="0 0 24 24" fill="currentColor"><path d="M10 4a6 6 0 104.472 10.07l3.73 3.73a1 1 0 001.415-1.414l-3.73-3.73A6 6 0 0010 4zm-4 6a4 4 0 118 0 4 4 0 01-8 0z"/></svg>
+      <input
+        class="w-full rounded-xl border border-gray-300 bg-white px-9 py-2 text-sm shadow-sm transition placeholder:text-gray-400 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30"
+        [ngModel]="state().keyword"
+        (ngModelChange)="empService.updateState({ keyword: $event, pageIndex: 0 })"
+        placeholder="Cari Keyword"
+      />
+    </div>
+  </div>
+  <div>
+    <label class="mb-1 block text-sm font-medium text-gray-700">Group</label>
+    <div class="relative">
+      <svg class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12a5 5 0 100-10 5 5 0 000 10zm-9 9a9 9 0 1118 0H3z"/></svg>
+      <input
+        class="w-full rounded-xl border border-gray-300 bg-white px-9 py-2 text-sm shadow-sm transition placeholder:text-gray-400 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30"
+        [ngModel]="state().group"
+        (ngModelChange)="empService.updateState({ group: $event, pageIndex: 0 })"
+        placeholder="Cari Group"
+      />
+    </div>
+  </div>
+</div>
+
+<div class="relative overflow-x-auto rounded-2xl border border-gray-200 bg-white shadow-sm">
+  <table class="min-w-full text-sm">
+    <thead class="sticky top-0 z-10 bg-gray-50/80 backdrop-blur supports-backdrop-blur:bg-gray-50/70 text-sm">
+      <tr class="text-left text-gray-700">
+        <th class="p-3 font-semibold select-none">
+          <button
+            class="group inline-flex items-center gap-1 hover:text-emerald-700"
+            (click)="setSort('username')"
+            [attr.aria-sort]="state().sortField==='username' ? (state().sortDir==='desc' ? 'descending' : 'ascending') : 'none'"
+          >
+            Username
+            <svg *ngIf="state().sortField!=='username'" class="h-3.5 w-3.5 text-gray-300 group-hover:text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M6 7h8l-4-4-4 4zm8 6H6l4 4 4-4z"/>
+            </svg>
+            <svg *ngIf="state().sortField==='username'" class="h-3.5 w-3.5 text-emerald-600" viewBox="0 0 20 20" fill="currentColor"
+                 [ngClass]="{'rotate-180': state().sortDir==='desc'}">
+              <path d="M5.5 12.5L10 8l4.5 4.5"/>
+            </svg>
+          </button>
+        </th>
+    
+        <th class="p-3 font-semibold select-none">
+          <button class="group inline-flex items-center gap-1 hover:text-emerald-700" (click)="setSort('firstName')"
+            [attr.aria-sort]="state().sortField==='firstName' ? (state().sortDir==='desc' ? 'descending' : 'ascending') : 'none'">
+            First Name
+            <svg *ngIf="state().sortField!=='firstName'" class="h-3.5 w-3.5 text-gray-300 group-hover:text-gray-400" viewBox="0 0 20 20" fill="currentColor"><path d="M6 7h8l-4-4-4 4zm8 6H6l4 4 4-4z"/></svg>
+            <svg *ngIf="state().sortField==='firstName'" class="h-3.5 w-3.5 text-emerald-600" viewBox="0 0 20 20" fill="currentColor" [ngClass]="{'rotate-180': state().sortDir==='desc'}"><path d="M5.5 12.5L10 8l4.5 4.5"/></svg>
+          </button>
+        </th>
+    
+        <th class="p-3 font-semibold select-none">
+          <button class="group inline-flex items-center gap-1 hover:text-emerald-700" (click)="setSort('lastName')"
+            [attr.aria-sort]="state().sortField==='lastName' ? (state().sortDir==='desc' ? 'descending' : 'ascending') : 'none'">
+            Last Name
+            <svg *ngIf="state().sortField!=='lastName'" class="h-3.5 w-3.5 text-gray-300 group-hover:text-gray-400" viewBox="0 0 20 20" fill="currentColor"><path d="M6 7h8l-4-4-4 4zm8 6H6l4 4 4-4z"/></svg>
+            <svg *ngIf="state().sortField==='lastName'" class="h-3.5 w-3.5 text-emerald-600" viewBox="0 0 20 20" fill="currentColor" [ngClass]="{'rotate-180': state().sortDir==='desc'}"><path d="M5.5 12.5L10 8l4.5 4.5"/></svg>
+          </button>
+        </th>
+    
+        <th class="p-3 font-semibold select-none">
+          <button class="group inline-flex items-center gap-1 hover:text-emerald-700" (click)="setSort('email')"
+            [attr.aria-sort]="state().sortField==='email' ? (state().sortDir==='desc' ? 'descending' : 'ascending') : 'none'">
+            Email
+            <svg *ngIf="state().sortField!=='email'" class="h-3.5 w-3.5 text-gray-300 group-hover:text-gray-400" viewBox="0 0 20 20" fill="currentColor"><path d="M6 7h8l-4-4-4 4zm8 6H6l4 4 4-4z"/></svg>
+            <svg *ngIf="state().sortField==='email'" class="h-3.5 w-3.5 text-emerald-600" viewBox="0 0 20 20" fill="currentColor" [ngClass]="{'rotate-180': state().sortDir==='desc'}"><path d="M5.5 12.5L10 8l4.5 4.5"/></svg>
+          </button>
+        </th>
+    
+        <th class="p-3 font-semibold select-none">
+          <button class="group inline-flex items-center gap-1 hover:text-emerald-700" (click)="setSort('group')"
+            [attr.aria-sort]="state().sortField==='group' ? (state().sortDir==='desc' ? 'descending' : 'ascending') : 'none'">
+            Group
+            <svg *ngIf="state().sortField!=='group'" class="h-3.5 w-3.5 text-gray-300 group-hover:text-gray-400" viewBox="0 0 20 20" fill="currentColor"><path d="M6 7h8l-4-4-4 4zm8 6H6l4 4 4-4z"/></svg>
+            <svg *ngIf="state().sortField==='group'" class="h-3.5 w-3.5 text-emerald-600" viewBox="0 0 20 20" fill="currentColor" [ngClass]="{'rotate-180': state().sortDir==='desc'}"><path d="M5.5 12.5L10 8l4.5 4.5"/></svg>
+          </button>
+        </th>
+    
+        <th class="p-3 font-semibold select-none">
+          <button class="group inline-flex items-center gap-1 hover:text-emerald-700" (click)="setSort('status')"
+            [attr.aria-sort]="state().sortField==='status' ? (state().sortDir==='desc' ? 'descending' : 'ascending') : 'none'">
+            Status
+            <svg *ngIf="state().sortField!=='status'" class="h-3.5 w-3.5 text-gray-300 group-hover:text-gray-400" viewBox="0 0 20 20" fill="currentColor"><path d="M6 7h8l-4-4-4 4zm8 6H6l4 4 4-4z"/></svg>
+            <svg *ngIf="state().sortField==='status'" class="h-3.5 w-3.5 text-emerald-600" viewBox="0 0 20 20" fill="currentColor" [ngClass]="{'rotate-180': state().sortDir==='desc'}"><path d="M5.5 12.5L10 8l4.5 4.5"/></svg>
+          </button>
+        </th>
+    
+        <th class="p-3 text-right font-semibold select-none">
+          <button class="group inline-flex items-center gap-1 hover:text-emerald-700" (click)="setSort('basicSalary')"
+            [attr.aria-sort]="state().sortField==='basicSalary' ? (state().sortDir==='desc' ? 'descending' : 'ascending') : 'none'">
+            <span>Basic Salary</span>
+            <svg *ngIf="state().sortField!=='basicSalary'" class="h-3.5 w-3.5 text-gray-300 group-hover:text-gray-400" viewBox="0 0 20 20" fill="currentColor"><path d="M6 7h8l-4-4-4 4zm8 6H6l4 4 4-4z"/></svg>
+            <svg *ngIf="state().sortField==='basicSalary'" class="h-3.5 w-3.5 text-emerald-600" viewBox="0 0 20 20" fill="currentColor" [ngClass]="{'rotate-180': state().sortDir==='desc'}"><path d="M5.5 12.5L10 8l4.5 4.5"/></svg>
+          </button>
+        </th>
+        <th class="p-3 font-semibold">Action</th>
+      </tr>
+    </thead>    
+
+    <tbody>
+      <tr *ngFor="let e of pageData()" class="odd:bg-white even:bg-gray-50 border-t border-gray-100 hover:bg-emerald-50/40 transition">
+        <td class="p-3">
+          <a class="font-medium text-emerald-700 underline-offset-2 hover:underline" [routerLink]="['/employees', e.username]">
+            {{ e.username }}
+          </a>
+        </td>
+        <td class="p-3">{{ e.firstName }}</td>
+        <td class="p-3">{{ e.lastName }}</td>
+        <td class="p-3">{{ e.email }}</td>
+        <td class="p-3">
+          <span class="inline-flex items-center rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-700 ring-1 ring-inset ring-gray-300">
+            {{ e.group }}
+          </span>
+        </td>
+        <td class="p-3">
+          <span
+            class="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ring-1 ring-inset"
+            [ngClass]="{
+              'bg-emerald-50 text-emerald-700 ring-emerald-600/20': e.status === 'Active',
+              'bg-yellow-50 text-yellow-800 ring-yellow-600/20': e.status === 'Probation' || e.status === 'Leave',
+              'bg-gray-100 text-gray-700 ring-gray-400/30': e.status === 'Inactive'
+            }"
+          >
+            <span class="h-1.5 w-1.5 rounded-full"
+              [ngClass]="{
+                'bg-emerald-500': e.status === 'Active',
+                'bg-yellow-500': e.status === 'Probation' || e.status === 'Leave',
+                'bg-gray-400': e.status === 'Inactive'
+              }"></span>
+            {{ e.status }}
+          </span>
+        </td>
+        <td class="p-3 text-right tabular-nums">{{ e.basicSalary | rupiah }}</td>
+        <td class="p-3">
+          <div class="flex gap-2">
+            <button
+              class="inline-flex items-center gap-1 rounded-lg border border-yellow-300 bg-yellow-50 px-3 py-1.5 text-xs font-medium text-yellow-900 hover:bg-yellow-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400"
+            >
+              Edit
+            </button>
+            <button
+              class="inline-flex items-center gap-1 rounded-lg border border-red-300 bg-red-50 px-3 py-1.5 text-xs font-medium text-red-900 hover:bg-red-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-400"
+            >
+              Delete
+            </button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="mt-4 flex items-center justify-between">
+  <div class="text-sm text-gray-600">
+    Total: {{ filtered().length }} | Page {{ state().pageIndex + 1 }} / {{ totalPages() }}
+  </div>
+  <div class="flex items-center gap-2">
+    <button
+      class="rounded-full border border-gray-300 bg-white px-3 py-1.5 text-sm hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+      (click)="gotoPage(0)"
+      [disabled]="state().pageIndex === 0"
+    >First</button>
+    <button
+      class="rounded-full border border-gray-300 bg-white px-3 py-1.5 text-sm hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+      (click)="gotoPage(state().pageIndex - 1)"
+      [disabled]="state().pageIndex === 0"
+    >Prev</button>
+    <button
+      class="rounded-full border border-gray-300 bg-white px-3 py-1.5 text-sm hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+      (click)="gotoPage(state().pageIndex + 1)"
+      [disabled]="state().pageIndex >= totalPages() - 1"
+    >Next</button>
+    <button
+      class="rounded-full border border-gray-300 bg-white px-3 py-1.5 text-sm hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+      (click)="gotoPage(totalPages()-1)"
+      [disabled]="state().pageIndex >= totalPages() - 1"
+    >Last</button>
+  </div>
+</div>

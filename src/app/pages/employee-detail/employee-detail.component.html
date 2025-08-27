@@ -1,0 +1,50 @@
+<div class="bg-white border rounded-xl shadow p-6" *ngIf="employee; else notfound">
+  <h1 class="text-xl font-semibold mb-4">Employee Detail</h1>
+  <div class="grid md:grid-cols-2 gap-4">
+    <div>
+      <div class="text-sm text-gray-500">Username</div>
+      <div class="font-medium">{{employee.username}}</div>
+    </div>
+    <div>
+      <div class="text-sm text-gray-500">Email</div>
+      <div class="font-medium">{{employee.email}}</div>
+    </div>
+    <div>
+      <div class="text-sm text-gray-500">First Name</div>
+      <div class="font-medium">{{employee.firstName}}</div>
+    </div>
+    <div>
+      <div class="text-sm text-gray-500">Last Name</div>
+      <div class="font-medium">{{employee.lastName}}</div>
+    </div>
+    <div>
+      <div class="text-sm text-gray-500">Birth Date</div>
+      <div class="font-medium">{{formatDate(employee.birthDate)}}</div>
+    </div>
+    <div>
+      <div class="text-sm text-gray-500">Basic Salary</div>
+      <div class="font-medium">{{employee.basicSalary | rupiah}}</div>
+    </div>
+    <div>
+      <div class="text-sm text-gray-500">Status</div>
+      <div class="font-medium">{{employee.status}}</div>
+    </div>
+    <div>
+      <div class="text-sm text-gray-500">Group</div>
+      <div class="font-medium">{{employee.group}}</div>
+    </div>
+    <div class="md:col-span-2">
+      <div class="text-sm text-gray-500">Description</div>
+      <div class="font-medium">{{employee.description}}</div>
+    </div>
+  </div>
+  <div class="mt-6">
+    <button class="px-4 py-2 rounded bg-gray-900 text-white hover:bg-gray-800" (click)="back()">Kembali</button>
+  </div>
+</div>
+<ng-template #notfound>
+  <div class="bg-white border rounded-xl shadow p-6">
+    <p>Employee tidak ditemukan.</p>
+    <a routerLink="/employees" class="text-blue-700 underline">Kembali</a>
+  </div>
+</ng-template>

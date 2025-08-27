@@ -5,7 +5,7 @@
    ```bash
    git clone https://github.com/<username>/<repo>.git
    cd <repo>
-2. Install dependencies: npm install
+2. Install dependencies: npm install --legacy-peer-deps
 3. Start dev server: npm start
 4. Buka project di browser
 5. Masukan username : admin & password : admin123
